@@ -49,7 +49,7 @@ function li_saveLoadSettings =
 			filein ((pathConfig.GetDir #MaxData)+"Scripts\\LEGO_Importer\\LEGO_Importer_rollouts.ms")
 			
 			if li_File != undefined do rl_Importer.filePath.text = li_File
-			if li_Lib != undefined do rl_Importer.libPath.text = li_Lib
+			if li_LibRoot != undefined do rl_Importer.libPath.text = li_LibRoot
 			if li_scaleFactor != undefined do rl_Importer.scaleFactor.value = li_scaleFactor as Float
 			
 			li_loadSettings()
@@ -61,10 +61,11 @@ function li_saveLoadSettings =
 		filein ((pathConfig.GetDir #MaxData)+"Scripts\\LEGO_Importer\\LEGO_Importer_rollouts.ms")
 		
 		if li_File != undefined do rl_Importer.filePath.text = li_File
-		if li_Lib != undefined do rl_Importer.libPath.text = li_Lib
+		if li_LibRoot != undefined do rl_Importer.libPath.text = li_LibRoot
 		if li_scaleFactor != "" do rl_Importer.scaleFactor.value = li_scaleFactor as Float
-
+		
 		li_loadSettings()
+		
 		clearListener()
 	)
 )

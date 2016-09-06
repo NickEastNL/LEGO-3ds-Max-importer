@@ -17,3 +17,14 @@ function validateFile =
 		rl_Status.errorList.Items = results
 	)
 )
+
+function getSubLibraries =
+(
+	if li_LibRoot != undefined then
+	(
+		local validator = dotNetObject "LDraw.Validator"
+		local libs = validator.GetSubLibraries li_LibRoot
+		
+		return libs
+	)
+)

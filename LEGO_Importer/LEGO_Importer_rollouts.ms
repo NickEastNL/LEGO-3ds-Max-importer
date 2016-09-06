@@ -15,11 +15,13 @@ rollout rl_Importer "Importer" width:320 height:328
 	checkbox 'noMaterials' "No materials" pos:[118,256] width:84 height:18 toolTip:"Import model with the default 'Medium Stone Grey' material" align:#left
 	button 'assembleBtn' "Assemble" pos:[108,280] width:104 height:32 enabled:false toolTip:"Assemble the model" align:#left
 	spinner 'scaleFactor' "Scale" pos:[24,152] width:53 height:16 range:[0,10,0] type:#float align:#left
-	dropDownList 'subLibrary' "Sublibrary" pos:[88,88] width:168 height:40 align:#left items:#("Default")
+	dropDownList 'subLibrary' "Sublibrary" pos:[86,88] width:150 align:#left
 	
 	on rl_Importer open do
 	(
 		li_loadSettings()
+		
+		subLibrary.items = getSubLibraries()
 	)
 	on rl_Importer close do
 	(
@@ -27,14 +29,15 @@ rollout rl_Importer "Importer" width:320 height:328
 	)
 	on selectFile pressed do
 	(
-		li_File = getOpenFileName caption:"Open LDraw file" types:"LDraw Model (*.ldr)|*.ldr|LDraw Multi-Part (*.mpd)|*.mpd"
-		if li_File == undefined then
+		local file = getOpenFileName caption:"Open LDraw file" types:"LDraw Model (*.ldr)|*.ldr|LDraw Multi-Part (*.mpd)|*.mpd"
+		if file == undefined then
 		(
-			filePath.text = ""
-			print "No file chosen"; errorState = true
+			filePath.text = li_File
+			print "No new file chosen"; errorState = true
 		) 
 		else
 		(
+			li_File = file
 			filePath.text = li_File
 		)
 	)
@@ -55,17 +58,25 @@ rollout rl_Importer "Importer" width:320 height:328
 	)
 	on selectLib pressed do
 	(
-		li_LibRoot = getSavePath caption:"Select LEGO Parts Library" initialDir:"C:/"
-		if li_LibRoot == undefined then
+		local root = getSavePath caption:"Select LEGO Parts Library" initialDir:li_LibRoot
+		if root == undefined then
 		(
-			libPath.text = ""
-			print "No library selected"; errorState = true
+			libPath.text = li_LibRoot
+			print "No new library selected"; errorState = true
 		)
 		else
 		(
+			li_LibRoot = root
 			libPath.text = li_LibRoot
-			li_Lib = li_LibRoot + @"\" + subLibrary.selected
+			
+			subLibrary.items = getSubLibraries()
 		)
+	)
+	on subLibrary selected lib do
+	(
+		li_Lib = li_LibRoot + @"\L_" + subLibrary.items[lib]
+		
+		print li_Lib
 	)
 	on assembleBtn pressed do
 	(

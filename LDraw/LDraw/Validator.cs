@@ -27,6 +27,29 @@ namespace LDraw
 
 			Utility.ClearErrors();
 		}
+
+		public string[] GetSubLibraries(string absPath)
+		{
+			if (absPath != null)
+			{
+				string[] SubLibsPaths = Directory.GetDirectories(absPath, "L_*");
+				List<string> SubLibsList = new List<string>();
+				string[] SubLibs;
+
+				foreach (var path in SubLibsPaths)
+				{
+					string DirName = new DirectoryInfo(path).Name;
+					string LibName = DirName.Substring(2);
+
+					SubLibsList.Add(LibName);
+				}
+
+				SubLibs = SubLibsList.ToArray();
+				return SubLibs;
+			}
+
+			return null;
+		}
 		
 		/// <summary>
 		/// Loads the LDraw file and saves each line as a string ready for parsing
