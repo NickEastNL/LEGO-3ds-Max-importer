@@ -45,8 +45,6 @@ function importLDraw =
 		append fullColorLib metalMat
 	)
 	
-	--TODO: Create and load transparent and metallic libraries
-	
 	li_setObjSettings()
 	
 	li_Importer = dotNetObject "LDraw.Importer"
