@@ -331,7 +331,7 @@ namespace LDraw
 
 					global.ExecuteMAXScriptScript("clonePart $" + model.ModelName + " " + "\"PL_" + submodels[i].SubmodelName + "\" " + transform + " \"" + null + " -*\"", false, null);
 					global.ExecuteMAXScriptScript("$.box = true", false, null);
-					global.ExecuteMAXScriptScript("$.size = 50", false, null);
+					global.ExecuteMAXScriptScript("$.size = 40", false, null);
 					global.ExecuteMAXScriptScript("$.wirecolor = color 0 252 252", false, null);
 					global.ExecuteMAXScriptScript("fn_modelLayer $" + submodels[i].SubmodelName, false, null);
 

@@ -28,9 +28,9 @@ function fn_modelLayer part =
 function importLDraw = 
 (
 	fullColorLib = materialLibrary()
-	solidColorLib = loadTempMaterialLibrary (li_Lib + "\Resources\LEGO_Colors_Solid.mat")
-	transColorLib = loadTempMaterialLibrary (li_Lib + "\Resources\LEGO_Colors_Trans.mat")
-	metalColorLib = loadTempMaterialLibrary (li_Lib + "\Resources\LEGO_Colors_Metallic.mat")
+	solidColorLib = loadTempMaterialLibrary (li_LibRoot + "\Resources\LEGO_Colors_Solid.mat")
+	transColorLib = loadTempMaterialLibrary (li_LibRoot + "\Resources\LEGO_Colors_Trans.mat")
+	metalColorLib = loadTempMaterialLibrary (li_LibRoot + "\Resources\LEGO_Colors_Metallic.mat")
 	
 	for solidMat in solidColorLib do
 	(
