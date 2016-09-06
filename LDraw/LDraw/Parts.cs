@@ -117,7 +117,7 @@ namespace LDraw
 	public class Model
 	{
 		private string _modelName;
-		private bool _isDependency;
+		private bool _isMain;
 		private List<Part> _parts = new List<Part>();
 		private List<Submodel> _submodels = new List<Submodel>();
 
@@ -133,10 +133,10 @@ namespace LDraw
 		/// <summary>
 		/// Determines if this model is a dependency (it doesn't contain a submodel, but is used in another)
 		/// </summary>
-		public bool IsDependency
+		public bool IsMain
 		{
-			get { return _isDependency; }
-			set { _isDependency = value; }
+			get { return _isMain; }
+			set { _isMain = value; }
 		}
 
 		/// <summary>

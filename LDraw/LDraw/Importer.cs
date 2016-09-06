@@ -65,6 +65,8 @@ namespace LDraw
 						Console.WriteLine(newModel.ModelName);
 					}
 				}
+
+				models[0].IsMain = true;
 				
 				return true;
 			}
@@ -152,8 +154,6 @@ namespace LDraw
 									newSubmodel.SourceModel = models.Find(x => x.ModelName == submodelName);
 									newSubmodel.ParentModel = model;
 
-									//model.IsDependency = true;
-
 									subModels.Add(newSubmodel);
 									model.Submodels.Add(newSubmodel);
 
@@ -164,10 +164,6 @@ namespace LDraw
 
 							index++;
 						} while (index < entries.Count && !entries[index].StartsWith("0 FILE"));
-
-
-						Utility.WriteListener("Model contains submodels: " + model.IsDependency);
-						Console.WriteLine("Model contains submodels: " + model.IsDependency);
 					}
 
 					return true;
@@ -264,18 +260,6 @@ namespace LDraw
 						global.ExecuteMAXScriptScript("newPoint.wirecolor = color 0 252 0", false, null);
 						global.ExecuteMAXScriptScript("newPoint.name = \"" + models[i].ModelName + "\"", false, null);
 						InstanceParts(models[i], true);
-
-						//if (models[i].IsDependency != true)
-						//{
-						//	global.ExecuteMAXScriptScript("newPoint = point()", false, null);
-						//	global.ExecuteMAXScriptScript("newPoint.box = true", false, null);
-						//	global.ExecuteMAXScriptScript("newPoint.name = \"" + models[i].ModelName + "\"", false, null);
-						//	InstanceParts(models[i], true);
-						//}
-						//if (models[i].IsDependency == true)
-						//{
-						//	InstanceParts(models[i]);
-						//}
 					}
 
 					return true;
@@ -340,6 +324,7 @@ namespace LDraw
 			{
 				if (!SearchParts(submodels[i].SubmodelName))
 				{
+					// POSSIBLE TODO: Instead of creating a placeholder, actually duplicate the submodel hierarchy and move it here.
 					Utility.WriteListener(submodels[i].SubmodelName + " helper doesn't exist");
 
 					string transform = SetTransform(submodels[i].Transform);
@@ -349,7 +334,6 @@ namespace LDraw
 					global.ExecuteMAXScriptScript("$.size = 50", false, null);
 					global.ExecuteMAXScriptScript("$.wirecolor = color 0 252 252", false, null);
 					global.ExecuteMAXScriptScript("fn_modelLayer $" + submodels[i].SubmodelName, false, null);
-
 
 					if (isSubModel == true)
 					{
