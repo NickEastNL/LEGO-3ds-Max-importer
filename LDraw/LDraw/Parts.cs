@@ -119,6 +119,7 @@ namespace LDraw
 		private string _modelName;
 		private bool _isDependency;
 		private List<Part> _parts = new List<Part>();
+		private List<Submodel> _submodels = new List<Submodel>();
 
 		/// <summary>
 		/// The explicit name of the model
@@ -145,6 +146,15 @@ namespace LDraw
 		{
 			get { return _parts; }
 			set { _parts = value; }
+		}
+
+		/// <summary>
+		/// The models that belong to this submodel
+		/// </summary>
+		public List<Submodel> Submodels
+		{
+			get { return _submodels; }
+			set { _submodels = value; }
 		}
 	}
 

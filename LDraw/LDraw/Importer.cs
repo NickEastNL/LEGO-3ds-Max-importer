@@ -96,13 +96,19 @@ namespace LDraw
 				{
 					int index = 0;
 
+					// Goes through each model found
 					foreach (var model in models)
 					{
+						// Searches for the index in the array where the model is defined
 						var currentModel = entries.FindIndex(x => x.StartsWith("0 FILE " + model.ModelName));
 						index = currentModel;
+
+						Utility.WriteListener(index + ": " + model.ModelName);
 						Console.WriteLine(index + ": " + model.ModelName);
-						do
+
+						do // Loops through each line until it reaches the next "0 FILE" line or the end of file
 						{
+							// Parses a LEGO part instance
 							if (!entries[index].StartsWith("0 FILE") && entries[index].EndsWith(".dat"))
 							{
 								Match values = partRegex.Match(entries[index]);
@@ -124,10 +130,12 @@ namespace LDraw
 									allParts.Add(newPart);
 									model.Parts.Add(newPart);
 
+									Utility.WriteListener(newPart.ParentModel.ModelName + "::Part: " + newPart.PartName);
 									Console.WriteLine(newPart.ParentModel.ModelName + "::Part: " + newPart.PartName);
 								}
 							}
 
+							// Parses a model instance
 							if (!entries[index].StartsWith("0 FILE") && entries[index].EndsWith(".ldr"))
 							{
 								Match values = partRegex.Match(entries[index]);
@@ -144,10 +152,12 @@ namespace LDraw
 									newSubmodel.SourceModel = models.Find(x => x.ModelName == submodelName);
 									newSubmodel.ParentModel = model;
 
-									model.IsDependency = true;
+									//model.IsDependency = true;
 
 									subModels.Add(newSubmodel);
+									model.Submodels.Add(newSubmodel);
 
+									Utility.WriteListener(newSubmodel.ParentModel.ModelName + "::Model: " + newSubmodel.SubmodelName);
 									Console.WriteLine(newSubmodel.ParentModel.ModelName + "::Model: " + newSubmodel.SubmodelName);
 								}
 							}
@@ -155,6 +165,8 @@ namespace LDraw
 							index++;
 						} while (index < entries.Count && !entries[index].StartsWith("0 FILE"));
 
+
+						Utility.WriteListener("Model contains submodels: " + model.IsDependency);
 						Console.WriteLine("Model contains submodels: " + model.IsDependency);
 					}
 
@@ -246,17 +258,24 @@ namespace LDraw
 
 					for (int i = 0; i < models.Count; i++)
 					{
-						if (models[i].IsDependency != true)
-						{
-							global.ExecuteMAXScriptScript("newPoint = point()", false, null);
-							global.ExecuteMAXScriptScript("newPoint.box = true", false, null);
-							global.ExecuteMAXScriptScript("newPoint.name = \"" + models[i].ModelName + "\"", false, null);
-							InstanceParts(models[i], true);
-						}
-						if (models[i].IsDependency == true)
-						{
-							InstanceParts(models[i]);
-						}
+						global.ExecuteMAXScriptScript("newPoint = point()", false, null);
+						global.ExecuteMAXScriptScript("newPoint.box = true", false, null);
+						global.ExecuteMAXScriptScript("newPoint.size = 40", false, null);
+						global.ExecuteMAXScriptScript("newPoint.wirecolor = color 0 252 0", false, null);
+						global.ExecuteMAXScriptScript("newPoint.name = \"" + models[i].ModelName + "\"", false, null);
+						InstanceParts(models[i], true);
+
+						//if (models[i].IsDependency != true)
+						//{
+						//	global.ExecuteMAXScriptScript("newPoint = point()", false, null);
+						//	global.ExecuteMAXScriptScript("newPoint.box = true", false, null);
+						//	global.ExecuteMAXScriptScript("newPoint.name = \"" + models[i].ModelName + "\"", false, null);
+						//	InstanceParts(models[i], true);
+						//}
+						//if (models[i].IsDependency == true)
+						//{
+						//	InstanceParts(models[i]);
+						//}
 					}
 
 					return true;
@@ -283,6 +302,7 @@ namespace LDraw
 			Utility.WriteListener("Instancing parts for \"" + model.ModelName + "\"");
 
 			List<Part> parts = model.Parts;
+			List<Submodel> submodels = model.Submodels;
 
 			for (int i = 0; i < model.Parts.Count; i++)
 			{
@@ -292,7 +312,7 @@ namespace LDraw
 					{
 						if (!SearchParts(parts[i].PartName))
 						{
-							Utility.WriteListener(parts[i].PartName + " doesn't exist");
+							Utility.WriteListener(parts[i].PartName + " part doesn't exist");
 
 							string transform = SetTransform(parts[i].Transform);
 
@@ -312,6 +332,28 @@ namespace LDraw
 					else
 					{
 						Utility.WriteListener("Part does not exist in scene");
+					}
+				}
+			}
+
+			for (int i = 0; i < model.Submodels.Count; i++)
+			{
+				if (!SearchParts(submodels[i].SubmodelName))
+				{
+					Utility.WriteListener(submodels[i].SubmodelName + " helper doesn't exist");
+
+					string transform = SetTransform(submodels[i].Transform);
+
+					global.ExecuteMAXScriptScript("clonePart $" + model.ModelName + " " + "\"PL_" + submodels[i].SubmodelName + "\" " + transform + " \"" + null + " -*\"", false, null);
+					global.ExecuteMAXScriptScript("$.box = true", false, null);
+					global.ExecuteMAXScriptScript("$.size = 50", false, null);
+					global.ExecuteMAXScriptScript("$.wirecolor = color 0 252 252", false, null);
+					global.ExecuteMAXScriptScript("fn_modelLayer $" + submodels[i].SubmodelName, false, null);
+
+
+					if (isSubModel == true)
+					{
+						global.ExecuteMAXScriptScript("$PL_" + submodels[i].SubmodelName + ".parent = $" + model.ModelName, false, null);
 					}
 				}
 			}
