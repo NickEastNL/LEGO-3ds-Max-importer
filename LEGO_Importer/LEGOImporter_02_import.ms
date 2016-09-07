@@ -4,10 +4,16 @@ function li_setObjSettings =
 	li_scaleFactor = rl_Importer.scaleFactor.value
 	li_utilityClass.scaleFactor = li_scaleFactor
 	
-	setIniSetting settings "General" "Preset" "<LEGO>"
+	-- First resets the import settings to default, then change the settings for importing the LEGO parts
+	print "Resetting importer configuration"
+	setIniSetting settings "General" "Preset" "<NONE>"
+	setIniSetting settings "Objects" "AsEditablePoly" "1"
+	setIniSetting settings "Objects" "Retriangulate" "0"
+	setIniSetting settings "Geometry" "FlipZyAxis" "0"
+	setIniSetting settings "Material" "UniqueWireColor" "0"
+	setIniSetting settings "Material" "ImportMaterials" "0"
 	setIniSetting settings "Units/Scale" "ObjScale" (li_scaleFactor as String)
-	preset = getIniSetting settings "General" "Preset"
-	print ("For importing, the Obj preset is set to " + preset )
+	print "Importer configured"
 	print ("Scale: " + (li_scaleFactor as String))
 )
 
@@ -28,9 +34,9 @@ function fn_modelLayer part =
 function importLDraw = 
 (
 	fullColorLib = materialLibrary()
-	solidColorLib = loadTempMaterialLibrary (li_Lib + "\Resources\LEGO_Colors_Solid.mat")
-	transColorLib = loadTempMaterialLibrary (li_Lib + "\Resources\LEGO_Colors_Trans.mat")
-	metalColorLib = loadTempMaterialLibrary (li_Lib + "\Resources\LEGO_Colors_Metallic.mat")
+	solidColorLib = loadTempMaterialLibrary (li_LibRoot + "\Resources\LEGO_Colors_Solid.mat")
+	transColorLib = loadTempMaterialLibrary (li_LibRoot + "\Resources\LEGO_Colors_Trans.mat")
+	metalColorLib = loadTempMaterialLibrary (li_LibRoot + "\Resources\LEGO_Colors_Metallic.mat")
 	
 	for solidMat in solidColorLib do
 	(
@@ -44,8 +50,6 @@ function importLDraw =
 	(
 		append fullColorLib metalMat
 	)
-	
-	--TODO: Create and load transparent and metallic libraries
 	
 	li_setObjSettings()
 	

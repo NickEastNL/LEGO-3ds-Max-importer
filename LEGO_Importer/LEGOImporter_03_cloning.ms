@@ -32,8 +32,8 @@ function clonePart iD pName matrixT colorID =
 			if (newMat == true) do $.material = fullColorLib[mat.name]
 		)
 	)
+	
 	LDMatrix = (matrix3 [-1,0,0] [0,0,1] [0,-1,0] [0,0,0])
-	--LDMatrix = (matrix3 [1,0,0] [0,0,-1] [0,1,0] [0,0,0])
 	newTrans = xformMat matrixT LDMatrix
 	newTrans.translation.X = -newTrans.translation.X
 	

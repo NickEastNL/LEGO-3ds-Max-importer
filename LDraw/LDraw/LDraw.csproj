@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autodesk.Max">
-      <HintPath>D:\Graphics\Autodesk\3ds Max 2016\Autodesk.Max.dll</HintPath>
+      <HintPath>C:\Program Files\Graphics\Autodesk\3ds Max 2016\Autodesk.Max.dll</HintPath>
     </Reference>
     <Reference Include="ManagedServices">
-      <HintPath>D:\Graphics\Autodesk\3ds Max 2016\ManagedServices.dll</HintPath>
+      <HintPath>C:\Program Files\Graphics\Autodesk\3ds Max 2016\ManagedServices.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -10,6 +10,7 @@ macroScript openImporter category:"LEGO" ButtonText:"Open Importer" tooltip:"Ope
 	global transColorLib
 	global li_File
 	global li_Lib
+	global li_LibRoot
 	global li_Importer
 	global li_scaleFactor
 	global partsLayer
