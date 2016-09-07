@@ -197,7 +197,7 @@ namespace LDraw
 				return true;
 			}
 
-			Utility.SetErrors(ErrorType.ERROR, "File or library wasn't loaded correctly, or this function was called prematurely");
+			Utility.SetErrors(ErrorType.ERROR, "File or library wasn't loaded correctly");
 			return false;
 		}
 
