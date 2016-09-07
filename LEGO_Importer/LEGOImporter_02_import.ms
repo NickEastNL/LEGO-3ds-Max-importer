@@ -4,10 +4,16 @@ function li_setObjSettings =
 	li_scaleFactor = rl_Importer.scaleFactor.value
 	li_utilityClass.scaleFactor = li_scaleFactor
 	
-	setIniSetting settings "General" "Preset" "<LEGO>"
+	-- First resets the import settings to default, then change the settings for importing the LEGO parts
+	print "Resetting importer configuration"
+	setIniSetting settings "General" "Preset" "<NONE>"
+	setIniSetting settings "Objects" "AsEditablePoly" "1"
+	setIniSetting settings "Objects" "Retriangulate" "0"
+	setIniSetting settings "Geometry" "FlipZyAxis" "0"
+	setIniSetting settings "Material" "UniqueWireColor" "0"
+	setIniSetting settings "Material" "ImportMaterials" "0"
 	setIniSetting settings "Units/Scale" "ObjScale" (li_scaleFactor as String)
-	preset = getIniSetting settings "General" "Preset"
-	print ("For importing, the Obj preset is set to " + preset )
+	print "Importer configured"
 	print ("Scale: " + (li_scaleFactor as String))
 )
 

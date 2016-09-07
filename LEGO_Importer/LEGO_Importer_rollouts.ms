@@ -15,7 +15,7 @@ rollout rl_Importer "Importer" width:320 height:328
 	checkbox 'noMaterials' "No materials" pos:[118,256] width:84 height:18 toolTip:"Import model with the default 'Medium Stone Grey' material" align:#left
 	button 'assembleBtn' "Assemble" pos:[108,280] width:104 height:32 enabled:false toolTip:"Assemble the model" align:#left
 	spinner 'scaleFactor' "Scale" pos:[24,152] width:53 height:16 range:[0,10,0] type:#float align:#left
-	dropDownList 'subLibrary' "Sublibrary" pos:[86,88] width:150 align:#left
+	dropDownList 'subLibrary' "Sublibrary" pos:[86,88] width:150 align:#left selection:1
 	
 	on rl_Importer open do
 	(
@@ -70,6 +70,8 @@ rollout rl_Importer "Importer" width:320 height:328
 			libPath.text = li_LibRoot
 			
 			subLibrary.items = getSubLibraries()
+			
+			print subLibrary.items
 		)
 	)
 	on subLibrary selected lib do

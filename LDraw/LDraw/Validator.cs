@@ -28,6 +28,12 @@ namespace LDraw
 			Utility.ClearErrors();
 		}
 
+		/// <summary>
+		/// Retrieves the sub-libraries, identified by their "L_" prefix.
+		/// 3ds Max will display a list in a dropdown menu to select which library to use when importing parts
+		/// </summary>
+		/// <param name="absPath">The absolute path to the root of the library</param>
+		/// <returns>Array of strings with readable names for each library, or null if none are found</returns>
 		public string[] GetSubLibraries(string absPath)
 		{
 			if (absPath != null)
